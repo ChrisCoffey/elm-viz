@@ -2679,6 +2679,205 @@ Elm.Graphics.Element.make = function (_elm) {
                                   ,Position: Position};
    return _elm.Graphics.Element.values;
 };
+Elm.Grid = Elm.Grid || {};
+Elm.Grid.make = function (_elm) {
+   "use strict";
+   _elm.Grid = _elm.Grid || {};
+   if (_elm.Grid.values)
+   return _elm.Grid.values;
+   var _op = {},
+   _N = Elm.Native,
+   _U = _N.Utils.make(_elm),
+   _L = _N.List.make(_elm),
+   $moduleName = "Grid",
+   $Basics = Elm.Basics.make(_elm),
+   $Color = Elm.Color.make(_elm),
+   $Graphics$Collage = Elm.Graphics.Collage.make(_elm),
+   $Graphics$Element = Elm.Graphics.Element.make(_elm),
+   $List = Elm.List.make(_elm);
+   var fancyLine = F3(function (n,
+   _v0,
+   axis) {
+      return function () {
+         switch (_v0.ctor)
+         {case "_Tuple2":
+            return function () {
+                 switch (axis.ctor)
+                 {case "X":
+                    return $Graphics$Collage.path(_L.fromArray([{ctor: "_Tuple2"
+                                                                ,_0: (0 - _v0._0) / 2
+                                                                ,_1: n}
+                                                               ,{ctor: "_Tuple2"
+                                                                ,_0: _v0._0 / 2
+                                                                ,_1: n}]));
+                    case "Y":
+                    return $Graphics$Collage.path(_L.fromArray([{ctor: "_Tuple2"
+                                                                ,_0: n
+                                                                ,_1: (0 - _v0._1) / 2}
+                                                               ,{ctor: "_Tuple2"
+                                                                ,_0: n
+                                                                ,_1: _v0._1 / 2}]));}
+                 _U.badCase($moduleName,
+                 "between lines 70 and 72");
+              }();}
+         _U.badCase($moduleName,
+         "between lines 70 and 72");
+      }();
+   });
+   var simpleGrid = F4(function (lines,
+   width,
+   height,
+   axis) {
+      return function () {
+         var floatLines = $Basics.toFloat(lines);
+         var wSlice = width / floatLines;
+         var hSlice = height / floatLines;
+         var ln = function (i) {
+            return function () {
+               switch (axis.ctor)
+               {case "X":
+                  return A2($Graphics$Collage.traced,
+                    $Graphics$Collage.dotted($Color.black),
+                    A3(fancyLine,
+                    hSlice * i,
+                    {ctor: "_Tuple2"
+                    ,_0: width
+                    ,_1: height},
+                    axis));
+                  case "Y":
+                  return A2($Graphics$Collage.traced,
+                    $Graphics$Collage.dotted($Color.black),
+                    A3(fancyLine,
+                    wSlice * i,
+                    {ctor: "_Tuple2"
+                    ,_0: width
+                    ,_1: height},
+                    axis));}
+               _U.badCase($moduleName,
+               "between lines 61 and 64");
+            }();
+         };
+         var range = _L.range((0 - floatLines) / 2,
+         floatLines / 2);
+         return A3($Graphics$Collage.collage,
+         $Basics.round(width),
+         $Basics.round(height),
+         A2($List.map,ln,range));
+      }();
+   });
+   var minors = F3(function (width,
+   height,
+   axis) {
+      return A4(simpleGrid,
+      10,
+      width,
+      height,
+      axis);
+   });
+   var majors = F3(function (width,
+   height,
+   axis) {
+      return function () {
+         var range = _L.range(-2.0,
+         2.0);
+         var hSlice = height / 5;
+         var wSlice = width / 5;
+         var ln = function (i) {
+            return function () {
+               switch (axis.ctor)
+               {case "X":
+                  return A2($Graphics$Collage.traced,
+                    $Graphics$Collage.dashed($Color.black),
+                    A3(fancyLine,
+                    hSlice * i,
+                    {ctor: "_Tuple2"
+                    ,_0: width
+                    ,_1: height},
+                    axis));
+                  case "Y":
+                  return A2($Graphics$Collage.traced,
+                    $Graphics$Collage.dashed($Color.black),
+                    A3(fancyLine,
+                    wSlice * i,
+                    {ctor: "_Tuple2"
+                    ,_0: width
+                    ,_1: height},
+                    axis));}
+               _U.badCase($moduleName,
+               "between lines 44 and 47");
+            }();
+         };
+         return A3($Graphics$Collage.collage,
+         $Basics.round(width),
+         $Basics.round(height),
+         A2($List.map,ln,range));
+      }();
+   });
+   var quadrent = F3(function (width,
+   height,
+   axis) {
+      return A2($Graphics$Collage.traced,
+      $Graphics$Collage.solid($Color.black),
+      A3(fancyLine,
+      0,
+      {ctor: "_Tuple2"
+      ,_0: width
+      ,_1: height},
+      axis));
+   });
+   var Y = {ctor: "Y"};
+   var X = {ctor: "X"};
+   var view = function (_v7) {
+      return function () {
+         switch (_v7.ctor)
+         {case "_Tuple2":
+            return function () {
+                 var trimH = $Basics.toFloat(_v7._1) / 5 * 4;
+                 var trimW = $Basics.toFloat(_v7._0) / 5 * 4;
+                 return A4($Graphics$Element.container,
+                 _v7._0,
+                 _v7._1,
+                 $Graphics$Element.middle,
+                 A3($Graphics$Collage.collage,
+                 _v7._0,
+                 _v7._1,
+                 _L.fromArray([A3(quadrent,
+                              trimW,
+                              trimH,
+                              X)
+                              ,A3(quadrent,trimW,trimH,Y)
+                              ,$Graphics$Collage.toForm(A3(majors,
+                              trimW,
+                              trimH,
+                              Y))
+                              ,$Graphics$Collage.toForm(A3(majors,
+                              trimW,
+                              trimH,
+                              X))
+                              ,$Graphics$Collage.toForm(A3(minors,
+                              trimW,
+                              trimH,
+                              Y))
+                              ,$Graphics$Collage.toForm(A3(minors,
+                              trimW,
+                              trimH,
+                              X))])));
+              }();}
+         _U.badCase($moduleName,
+         "between lines 15 and 26");
+      }();
+   };
+   _elm.Grid.values = {_op: _op
+                      ,view: view
+                      ,X: X
+                      ,Y: Y
+                      ,quadrent: quadrent
+                      ,majors: majors
+                      ,minors: minors
+                      ,simpleGrid: simpleGrid
+                      ,fancyLine: fancyLine};
+   return _elm.Grid.values;
+};
 Elm.Html = Elm.Html || {};
 Elm.Html.make = function (_elm) {
    "use strict";
@@ -4135,198 +4334,15 @@ Elm.Main.make = function (_elm) {
    _U = _N.Utils.make(_elm),
    _L = _N.List.make(_elm),
    $moduleName = "Main",
-   $Basics = Elm.Basics.make(_elm),
-   $Color = Elm.Color.make(_elm),
-   $Graphics$Collage = Elm.Graphics.Collage.make(_elm),
    $Graphics$Element = Elm.Graphics.Element.make(_elm),
-   $List = Elm.List.make(_elm),
+   $Grid = Elm.Grid.make(_elm),
    $Signal = Elm.Signal.make(_elm),
    $Window = Elm.Window.make(_elm);
-   var fancyLine = F3(function (n,
-   _v0,
-   axis) {
-      return function () {
-         switch (_v0.ctor)
-         {case "_Tuple2":
-            return function () {
-                 switch (axis.ctor)
-                 {case "X":
-                    return $Graphics$Collage.path(_L.fromArray([{ctor: "_Tuple2"
-                                                                ,_0: (0 - _v0._0) / 2
-                                                                ,_1: n}
-                                                               ,{ctor: "_Tuple2"
-                                                                ,_0: _v0._0 / 2
-                                                                ,_1: n}]));
-                    case "Y":
-                    return $Graphics$Collage.path(_L.fromArray([{ctor: "_Tuple2"
-                                                                ,_0: n
-                                                                ,_1: (0 - _v0._1) / 2}
-                                                               ,{ctor: "_Tuple2"
-                                                                ,_0: n
-                                                                ,_1: _v0._1 / 2}]));}
-                 _U.badCase($moduleName,
-                 "between lines 73 and 75");
-              }();}
-         _U.badCase($moduleName,
-         "between lines 73 and 75");
-      }();
-   });
-   var simpleGrid = F4(function (lines,
-   width,
-   height,
-   axis) {
-      return function () {
-         var floatLines = $Basics.toFloat(lines);
-         var wSlice = width / floatLines;
-         var hSlice = height / floatLines;
-         var ln = function (i) {
-            return function () {
-               switch (axis.ctor)
-               {case "X":
-                  return A2($Graphics$Collage.traced,
-                    $Graphics$Collage.dotted($Color.black),
-                    A3(fancyLine,
-                    hSlice * i,
-                    {ctor: "_Tuple2"
-                    ,_0: width
-                    ,_1: height},
-                    axis));
-                  case "Y":
-                  return A2($Graphics$Collage.traced,
-                    $Graphics$Collage.dotted($Color.black),
-                    A3(fancyLine,
-                    wSlice * i,
-                    {ctor: "_Tuple2"
-                    ,_0: width
-                    ,_1: height},
-                    axis));}
-               _U.badCase($moduleName,
-               "between lines 64 and 67");
-            }();
-         };
-         var range = _L.range((0 - floatLines) / 2,
-         floatLines / 2);
-         return A3($Graphics$Collage.collage,
-         $Basics.round(width),
-         $Basics.round(height),
-         A2($List.map,ln,range));
-      }();
-   });
-   var minors = F3(function (width,
-   height,
-   axis) {
-      return A4(simpleGrid,
-      10,
-      width,
-      height,
-      axis);
-   });
-   var majors = F3(function (width,
-   height,
-   axis) {
-      return function () {
-         var range = _L.range(-2.0,
-         2.0);
-         var hSlice = height / 5;
-         var wSlice = width / 5;
-         var ln = function (i) {
-            return function () {
-               switch (axis.ctor)
-               {case "X":
-                  return A2($Graphics$Collage.traced,
-                    $Graphics$Collage.dashed($Color.black),
-                    A3(fancyLine,
-                    hSlice * i,
-                    {ctor: "_Tuple2"
-                    ,_0: width
-                    ,_1: height},
-                    axis));
-                  case "Y":
-                  return A2($Graphics$Collage.traced,
-                    $Graphics$Collage.dashed($Color.black),
-                    A3(fancyLine,
-                    wSlice * i,
-                    {ctor: "_Tuple2"
-                    ,_0: width
-                    ,_1: height},
-                    axis));}
-               _U.badCase($moduleName,
-               "between lines 47 and 50");
-            }();
-         };
-         return A3($Graphics$Collage.collage,
-         $Basics.round(width),
-         $Basics.round(height),
-         A2($List.map,ln,range));
-      }();
-   });
-   var quadrent = F3(function (width,
-   height,
-   axis) {
-      return A2($Graphics$Collage.traced,
-      $Graphics$Collage.solid($Color.black),
-      A3(fancyLine,
-      0,
-      {ctor: "_Tuple2"
-      ,_0: width
-      ,_1: height},
-      axis));
-   });
-   var Y = {ctor: "Y"};
-   var X = {ctor: "X"};
-   var view = function (_v7) {
-      return function () {
-         switch (_v7.ctor)
-         {case "_Tuple2":
-            return function () {
-                 var trimH = $Basics.toFloat(_v7._1) / 5 * 4;
-                 var trimW = $Basics.toFloat(_v7._0) / 5 * 4;
-                 return A4($Graphics$Element.container,
-                 _v7._0,
-                 _v7._1,
-                 $Graphics$Element.middle,
-                 A3($Graphics$Collage.collage,
-                 _v7._0,
-                 _v7._1,
-                 _L.fromArray([A3(quadrent,
-                              trimW,
-                              trimH,
-                              X)
-                              ,A3(quadrent,trimW,trimH,Y)
-                              ,$Graphics$Collage.toForm(A3(majors,
-                              trimW,
-                              trimH,
-                              Y))
-                              ,$Graphics$Collage.toForm(A3(majors,
-                              trimW,
-                              trimH,
-                              X))
-                              ,$Graphics$Collage.toForm(A3(minors,
-                              trimW,
-                              trimH,
-                              Y))
-                              ,$Graphics$Collage.toForm(A3(minors,
-                              trimW,
-                              trimH,
-                              X))])));
-              }();}
-         _U.badCase($moduleName,
-         "between lines 18 and 29");
-      }();
-   };
    var main = A2($Signal.map,
-   view,
+   $Grid.view,
    $Window.dimensions);
    _elm.Main.values = {_op: _op
-                      ,main: main
-                      ,view: view
-                      ,X: X
-                      ,Y: Y
-                      ,quadrent: quadrent
-                      ,majors: majors
-                      ,minors: minors
-                      ,simpleGrid: simpleGrid
-                      ,fancyLine: fancyLine};
+                      ,main: main};
    return _elm.Main.values;
 };
 Elm.Maybe = Elm.Maybe || {};
