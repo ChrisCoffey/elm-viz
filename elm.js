@@ -4165,16 +4165,70 @@ Elm.Main.make = function (_elm) {
                                                                 ,_0: n
                                                                 ,_1: _v0._1 / 2}]));}
                  _U.badCase($moduleName,
-                 "between lines 48 and 50");
+                 "between lines 73 and 75");
               }();}
          _U.badCase($moduleName,
-         "between lines 48 and 50");
+         "between lines 73 and 75");
       }();
+   });
+   var simpleGrid = F4(function (lines,
+   width,
+   height,
+   axis) {
+      return function () {
+         var floatLines = $Basics.toFloat(lines);
+         var wSlice = width / floatLines;
+         var hSlice = height / floatLines;
+         var ln = function (i) {
+            return function () {
+               switch (axis.ctor)
+               {case "X":
+                  return A2($Graphics$Collage.traced,
+                    $Graphics$Collage.dotted($Color.black),
+                    A3(fancyLine,
+                    hSlice * i,
+                    {ctor: "_Tuple2"
+                    ,_0: width
+                    ,_1: height},
+                    axis));
+                  case "Y":
+                  return A2($Graphics$Collage.traced,
+                    $Graphics$Collage.dotted($Color.black),
+                    A3(fancyLine,
+                    wSlice * i,
+                    {ctor: "_Tuple2"
+                    ,_0: width
+                    ,_1: height},
+                    axis));}
+               _U.badCase($moduleName,
+               "between lines 64 and 67");
+            }();
+         };
+         var range = _L.range((0 - floatLines) / 2,
+         floatLines / 2);
+         return A3($Graphics$Collage.collage,
+         $Basics.round(width),
+         $Basics.round(height),
+         A2($List.map,ln,range));
+      }();
+   });
+   var minors = F3(function (width,
+   height,
+   axis) {
+      return A4(simpleGrid,
+      10,
+      width,
+      height,
+      axis);
    });
    var majors = F3(function (width,
    height,
    axis) {
       return function () {
+         var range = _L.range(-2.0,
+         2.0);
+         var hSlice = height / 5;
+         var wSlice = width / 5;
          var ln = function (i) {
             return function () {
                switch (axis.ctor)
@@ -4182,28 +4236,27 @@ Elm.Main.make = function (_elm) {
                   return A2($Graphics$Collage.traced,
                     $Graphics$Collage.dashed($Color.black),
                     A3(fancyLine,
-                    $Basics.toFloat(width) / i,
+                    hSlice * i,
                     {ctor: "_Tuple2"
-                    ,_0: $Basics.toFloat(width)
-                    ,_1: $Basics.toFloat(height)},
+                    ,_0: width
+                    ,_1: height},
                     axis));
                   case "Y":
                   return A2($Graphics$Collage.traced,
                     $Graphics$Collage.dashed($Color.black),
                     A3(fancyLine,
-                    $Basics.toFloat(height) / i,
+                    wSlice * i,
                     {ctor: "_Tuple2"
-                    ,_0: $Basics.toFloat(width)
-                    ,_1: $Basics.toFloat(height)},
+                    ,_0: width
+                    ,_1: height},
                     axis));}
                _U.badCase($moduleName,
-               "between lines 40 and 43");
+               "between lines 47 and 50");
             }();
          };
-         var range = _L.range(-3.0,3.0);
          return A3($Graphics$Collage.collage,
-         width,
-         height,
+         $Basics.round(width),
+         $Basics.round(height),
          A2($List.map,ln,range));
       }();
    });
@@ -4215,40 +4268,50 @@ Elm.Main.make = function (_elm) {
       A3(fancyLine,
       0,
       {ctor: "_Tuple2"
-      ,_0: $Basics.toFloat(width)
-      ,_1: $Basics.toFloat(height)},
+      ,_0: width
+      ,_1: height},
       axis));
    });
    var Y = {ctor: "Y"};
    var X = {ctor: "X"};
-   var line = $Graphics$Collage.path(_L.fromArray([{ctor: "_Tuple2"
-                                                   ,_0: 50
-                                                   ,_1: 50}
-                                                  ,{ctor: "_Tuple2"
-                                                   ,_0: 50
-                                                   ,_1: -50}]));
-   var view = function (_v6) {
+   var view = function (_v7) {
       return function () {
-         switch (_v6.ctor)
+         switch (_v7.ctor)
          {case "_Tuple2":
-            return A4($Graphics$Element.container,
-              _v6._0,
-              _v6._1,
-              $Graphics$Element.middle,
-              A3($Graphics$Collage.collage,
-              _v6._0,
-              _v6._1,
-              _L.fromArray([A3(quadrent,
-                           _v6._0,
-                           _v6._1,
-                           X)
-                           ,A3(quadrent,_v6._0,_v6._1,Y)
-                           ,$Graphics$Collage.toForm(A3(majors,
-                           _v6._0,
-                           _v6._1,
-                           Y))])));}
+            return function () {
+                 var trimH = $Basics.toFloat(_v7._1) / 5 * 4;
+                 var trimW = $Basics.toFloat(_v7._0) / 5 * 4;
+                 return A4($Graphics$Element.container,
+                 _v7._0,
+                 _v7._1,
+                 $Graphics$Element.middle,
+                 A3($Graphics$Collage.collage,
+                 _v7._0,
+                 _v7._1,
+                 _L.fromArray([A3(quadrent,
+                              trimW,
+                              trimH,
+                              X)
+                              ,A3(quadrent,trimW,trimH,Y)
+                              ,$Graphics$Collage.toForm(A3(majors,
+                              trimW,
+                              trimH,
+                              Y))
+                              ,$Graphics$Collage.toForm(A3(majors,
+                              trimW,
+                              trimH,
+                              X))
+                              ,$Graphics$Collage.toForm(A3(minors,
+                              trimW,
+                              trimH,
+                              Y))
+                              ,$Graphics$Collage.toForm(A3(minors,
+                              trimW,
+                              trimH,
+                              X))])));
+              }();}
          _U.badCase($moduleName,
-         "between lines 16 and 21");
+         "between lines 18 and 29");
       }();
    };
    var main = A2($Signal.map,
@@ -4257,11 +4320,12 @@ Elm.Main.make = function (_elm) {
    _elm.Main.values = {_op: _op
                       ,main: main
                       ,view: view
-                      ,line: line
                       ,X: X
                       ,Y: Y
                       ,quadrent: quadrent
                       ,majors: majors
+                      ,minors: minors
+                      ,simpleGrid: simpleGrid
                       ,fancyLine: fancyLine};
    return _elm.Main.values;
 };

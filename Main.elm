@@ -6,41 +6,66 @@ import Html exposing (..)
 import Html.Attributes exposing (..)
 import Html.Events exposing (..)
 
-
+-- View Rendering
 main: Signal  Element
 main =
   Signal.map view Window.dimensions
 
+
+-- View
 view: (Int, Int) -> Element
-view (w, h) = 
-  container w h middle (
+view (w, h) =
+ let trimW = ((toFloat w /5) * 4)
+     trimH = ((toFloat h / 5) * 4 )
+ in container w h middle (
     collage w h [
-      quadrent w h X      
-      , quadrent w h Y
-      , toForm (majors w h Y)
+      quadrent trimW trimH X      
+      , quadrent trimW trimH Y
+      , toForm (majors trimW trimH Y)
+      , toForm (majors trimW trimH X)
+      , toForm (minors trimW trimH Y)
+      , toForm (minors trimW trimH X)
     ] 
   )
 
-line: Path
-line =
-  path [ (50, 50), (50, -50)]
-
+--Model
 type Axis = 
   X |
   Y
 
-quadrent: Int -> Int -> Axis -> Form
+quadrent: Float -> Float -> Axis -> Form
 quadrent width height axis=
-  traced (solid black) (fancyLine 0 (toFloat width, toFloat height) axis)
+  traced (solid black) (fancyLine 0 (width, height) axis)
 
 
-majors: Int -> Int -> Axis -> Element
+majors: Float -> Float -> Axis -> Element
 majors width height axis = 
-  let range = [-3.0..3.0]
+  let 
+     wSlice = width/5
+     hSlice = height/5  
+     range = [-2.0..2.0]
+     ln i = case axis of
+        X -> traced (dashed black) (fancyLine (hSlice *i) (width, height) axis)
+        Y -> traced (dashed black) (fancyLine (wSlice *i) (width, height) axis)
+  in collage (round width) (round height) ( List.map ln range )
+
+
+minors: Float -> Float -> Axis -> Element
+minors width height axis =
+ simpleGrid 10 width height axis 
+
+simpleGrid: Int -> Float -> Float -> Axis -> Element
+simpleGrid lines width height axis = 
+  let
+      floatLines = toFloat lines
+      wSlice = width / floatLines
+      hSlice = height / floatLines
+      range = [-floatLines/2 .. floatLines/2]
       ln i = case axis of
-        X -> traced (dashed black) (fancyLine (toFloat width/i) (toFloat width, toFloat height) axis)
-        Y -> traced (dashed black) (fancyLine (toFloat height/i) (toFloat width, toFloat height) axis)
-  in collage width height ( List.map ln range )
+        X -> traced (dotted black) (fancyLine (hSlice * i) (width, height) axis)
+        Y -> traced (dotted black) (fancyLine (wSlice *i) (width, height) axis)
+  in collage (round width) (round height) ( List.map ln range )
+
 
 
 fancyLine: Float -> (Float, Float) -> Axis -> Path
