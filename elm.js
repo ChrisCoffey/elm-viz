@@ -4347,8 +4347,8 @@ Elm.Main.make = function (_elm) {
       $Graphics$Collage.path(points));
    };
    var genPoints = function () {
-      var r = _L.range(-500.0,
-      500.0);
+      var r = _L.range(-100.0,
+      100.0);
       return A3($List.map2,
       F2(function (v0,v1) {
          return {ctor: "_Tuple2"
@@ -4455,7 +4455,12 @@ Elm.Main.make = function (_elm) {
                            _L.fromArray([$Graphics$Collage.toForm($Grid.view({ctor: "_Tuple2"
                                                                              ,_0: _v8._0
                                                                              ,_1: _v8._1}))
-                                        ,draw(genPoints)]))])));}
+                                        ,draw(A3(scale,
+                                        {ctor: "_Tuple2"
+                                        ,_0: _v8._0
+                                        ,_1: _v8._1},
+                                        extremes(genPoints),
+                                        genPoints))]))])));}
          _U.badCase($moduleName,
          "between lines 21 and 34");
       }();

@@ -29,7 +29,7 @@ view (w, h) =
     ]
     , collage w h [
        toForm (Grid.view (w, h))
-       ,draw genPoints 
+       ,draw (scale (w, h) (extremes genPoints) genPoints )
       ]
   ])
 
@@ -73,7 +73,7 @@ scale (w, h) mm points =
 
 genPoints: List Point
 genPoints = 
-  let r = [-500.0 .. 500.0]
+  let r = [-100.0 .. 100.0]
   in 
     List.map2 (,) (List.map (\x -> x*x) r ) r
 
