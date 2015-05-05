@@ -2718,10 +2718,10 @@ Elm.Grid.make = function (_elm) {
                                                                 ,_0: n
                                                                 ,_1: _v0._1 / 2}]));}
                  _U.badCase($moduleName,
-                 "between lines 70 and 72");
+                 "between lines 73 and 75");
               }();}
          _U.badCase($moduleName,
-         "between lines 70 and 72");
+         "between lines 73 and 75");
       }();
    });
    var simpleGrid = F4(function (lines,
@@ -2754,7 +2754,7 @@ Elm.Grid.make = function (_elm) {
                     ,_1: height},
                     axis));}
                _U.badCase($moduleName,
-               "between lines 61 and 64");
+               "between lines 64 and 67");
             }();
          };
          var range = _L.range((0 - floatLines) / 2,
@@ -2804,7 +2804,7 @@ Elm.Grid.make = function (_elm) {
                     ,_1: height},
                     axis));}
                _U.badCase($moduleName,
-               "between lines 44 and 47");
+               "between lines 47 and 50");
             }();
          };
          return A3($Graphics$Collage.collage,
@@ -2833,14 +2833,12 @@ Elm.Grid.make = function (_elm) {
          {case "_Tuple2":
             return function () {
                  var trimH = $Basics.toFloat(_v7._1) / 5 * 4;
+                 var rh = $Basics.round(trimH);
                  var trimW = $Basics.toFloat(_v7._0) / 5 * 4;
-                 return A4($Graphics$Element.container,
-                 _v7._0,
-                 _v7._1,
-                 $Graphics$Element.middle,
-                 A3($Graphics$Collage.collage,
-                 _v7._0,
-                 _v7._1,
+                 var rw = $Basics.round(trimW);
+                 return A3($Graphics$Collage.collage,
+                 rw,
+                 rh,
                  _L.fromArray([A3(quadrent,
                               trimW,
                               trimH,
@@ -2861,10 +2859,10 @@ Elm.Grid.make = function (_elm) {
                               ,$Graphics$Collage.toForm(A3(minors,
                               trimW,
                               trimH,
-                              X))])));
+                              X))]));
               }();}
          _U.badCase($moduleName,
-         "between lines 15 and 26");
+         "between lines 16 and 28");
       }();
    };
    _elm.Grid.values = {_op: _op
@@ -4336,13 +4334,74 @@ Elm.Main.make = function (_elm) {
    $moduleName = "Main",
    $Graphics$Element = Elm.Graphics.Element.make(_elm),
    $Grid = Elm.Grid.make(_elm),
+   $List = Elm.List.make(_elm),
+   $Maybe = Elm.Maybe.make(_elm),
    $Signal = Elm.Signal.make(_elm),
    $Window = Elm.Window.make(_elm);
+   var extremes = function (ls) {
+      return function () {
+         var minimum = function (nums) {
+            return A2($Maybe.withDefault,
+            0,
+            $List.minimum(nums));
+         };
+         var maximum = function (nums) {
+            return A2($Maybe.withDefault,
+            0,
+            $List.maximum(nums));
+         };
+         var $ = $List.unzip(ls),
+         xs = $._0,
+         ys = $._1;
+         return {_: {}
+                ,xMax: maximum(xs)
+                ,xMin: minimum(xs)
+                ,yMax: maximum(ys)
+                ,yMin: minimum(ys)};
+      }();
+   };
+   var MaxMin = F4(function (a,
+   b,
+   c,
+   d) {
+      return {_: {}
+             ,xMax: a
+             ,xMin: b
+             ,yMax: c
+             ,yMin: d};
+   });
+   var view = function (_v0) {
+      return function () {
+         switch (_v0.ctor)
+         {case "_Tuple2":
+            return A4($Graphics$Element.container,
+              _v0._0,
+              _v0._1,
+              $Graphics$Element.middle,
+              A2($Graphics$Element.flow,
+              $Graphics$Element.down,
+              _L.fromArray([A2($Graphics$Element.flow,
+                           $Graphics$Element.right,
+                           _L.fromArray([$Graphics$Element.show("Input here: ")
+                                        ,$Graphics$Element.show("Pretend 1")
+                                        ,$Graphics$Element.show("Pretend 2")
+                                        ,$Graphics$Element.show("Pretend 3")
+                                        ,$Graphics$Element.show("Pretend 4")]))
+                           ,$Grid.view({ctor: "_Tuple2"
+                                       ,_0: _v0._0
+                                       ,_1: _v0._1})])));}
+         _U.badCase($moduleName,
+         "between lines 21 and 31");
+      }();
+   };
    var main = A2($Signal.map,
-   $Grid.view,
+   view,
    $Window.dimensions);
    _elm.Main.values = {_op: _op
-                      ,main: main};
+                      ,main: main
+                      ,view: view
+                      ,MaxMin: MaxMin
+                      ,extremes: extremes};
    return _elm.Main.values;
 };
 Elm.Maybe = Elm.Maybe || {};

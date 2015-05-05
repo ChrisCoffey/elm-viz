@@ -9,13 +9,16 @@ import Html.Attributes exposing (..)
 import Html.Events exposing (..)
 
 
+
 -- View
 view: (Int, Int) -> Element
 view (w, h) =
  let trimW = ((toFloat w /5) * 4)
      trimH = ((toFloat h / 5) * 4 )
- in container w h middle (
-    collage w h [
+     rw = round trimW
+     rh = round trimH 
+ in 
+    collage rw rh [
       quadrent trimW trimH X      
       , quadrent trimW trimH Y
       , toForm (majors trimW trimH Y)
@@ -23,7 +26,7 @@ view (w, h) =
       , toForm (minors trimW trimH Y)
       , toForm (minors trimW trimH X)
     ] 
-  )
+  
 
 --Model
 type Axis = 
