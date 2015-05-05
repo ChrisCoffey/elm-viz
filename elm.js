@@ -4332,12 +4332,74 @@ Elm.Main.make = function (_elm) {
    _U = _N.Utils.make(_elm),
    _L = _N.List.make(_elm),
    $moduleName = "Main",
+   $Basics = Elm.Basics.make(_elm),
+   $Color = Elm.Color.make(_elm),
+   $Graphics$Collage = Elm.Graphics.Collage.make(_elm),
    $Graphics$Element = Elm.Graphics.Element.make(_elm),
    $Grid = Elm.Grid.make(_elm),
    $List = Elm.List.make(_elm),
    $Maybe = Elm.Maybe.make(_elm),
    $Signal = Elm.Signal.make(_elm),
    $Window = Elm.Window.make(_elm);
+   var draw = function (points) {
+      return A2($Graphics$Collage.traced,
+      $Graphics$Collage.solid($Color.red),
+      $Graphics$Collage.path(points));
+   };
+   var genPoints = function () {
+      var r = _L.range(-500.0,
+      500.0);
+      return A3($List.map2,
+      F2(function (v0,v1) {
+         return {ctor: "_Tuple2"
+                ,_0: v0
+                ,_1: v1};
+      }),
+      A2($List.map,
+      function (x) {
+         return x * x;
+      },
+      r),
+      r);
+   }();
+   var scale = F3(function (_v0,
+   mm,
+   points) {
+      return function () {
+         switch (_v0.ctor)
+         {case "_Tuple2":
+            return function () {
+                 var fit = F4(function (i,
+                 max,
+                 min,
+                 val) {
+                    return i * $Basics.abs(val - min) / $Basics.abs(max - min);
+                 });
+                 var f = function (_v4) {
+                    return function () {
+                       switch (_v4.ctor)
+                       {case "_Tuple2":
+                          return {ctor: "_Tuple2"
+                                 ,_0: A4(fit,
+                                 $Basics.toFloat(_v0._0),
+                                 mm.xMax,
+                                 mm.xMin,
+                                 _v4._0)
+                                 ,_1: A4(fit,
+                                 $Basics.toFloat(_v0._1),
+                                 mm.yMax,
+                                 mm.yMin,
+                                 _v4._1)};}
+                       _U.badCase($moduleName,
+                       "on line 70, column 19 to 87");
+                    }();
+                 };
+                 return A2($List.map,f,points);
+              }();}
+         _U.badCase($moduleName,
+         "between lines 69 and 72");
+      }();
+   });
    var extremes = function (ls) {
       return function () {
          var minimum = function (nums) {
@@ -4370,13 +4432,13 @@ Elm.Main.make = function (_elm) {
              ,yMax: c
              ,yMin: d};
    });
-   var view = function (_v0) {
+   var view = function (_v8) {
       return function () {
-         switch (_v0.ctor)
+         switch (_v8.ctor)
          {case "_Tuple2":
             return A4($Graphics$Element.container,
-              _v0._0,
-              _v0._1,
+              _v8._0,
+              _v8._1,
               $Graphics$Element.middle,
               A2($Graphics$Element.flow,
               $Graphics$Element.down,
@@ -4387,11 +4449,15 @@ Elm.Main.make = function (_elm) {
                                         ,$Graphics$Element.show("Pretend 2")
                                         ,$Graphics$Element.show("Pretend 3")
                                         ,$Graphics$Element.show("Pretend 4")]))
-                           ,$Grid.view({ctor: "_Tuple2"
-                                       ,_0: _v0._0
-                                       ,_1: _v0._1})])));}
+                           ,A3($Graphics$Collage.collage,
+                           _v8._0,
+                           _v8._1,
+                           _L.fromArray([$Graphics$Collage.toForm($Grid.view({ctor: "_Tuple2"
+                                                                             ,_0: _v8._0
+                                                                             ,_1: _v8._1}))
+                                        ,draw(genPoints)]))])));}
          _U.badCase($moduleName,
-         "between lines 21 and 31");
+         "between lines 21 and 34");
       }();
    };
    var main = A2($Signal.map,
@@ -4401,7 +4467,10 @@ Elm.Main.make = function (_elm) {
                       ,main: main
                       ,view: view
                       ,MaxMin: MaxMin
-                      ,extremes: extremes};
+                      ,extremes: extremes
+                      ,scale: scale
+                      ,genPoints: genPoints
+                      ,draw: draw};
    return _elm.Main.values;
 };
 Elm.Maybe = Elm.Maybe || {};

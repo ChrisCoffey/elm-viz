@@ -27,7 +27,10 @@ view (w, h) =
       , show "Pretend 3" 
       , show "Pretend 4" 
     ]
-    ,Grid.view (w, h)
+    , collage w h [
+       toForm (Grid.view (w, h))
+       ,draw genPoints 
+      ]
   ])
 
 -- Graph plotting
@@ -35,6 +38,9 @@ view (w, h) =
 -- Then scatter (x, y)
 -- Then scatter with magnitude (x, y, z)
 
+
+
+-- Business Logic
 type alias MaxMin = 
   {
     xMax: Float
@@ -43,7 +49,9 @@ type alias MaxMin =
     ,yMin: Float
   }
 
-extremes: List (Float, Float) -> MaxMin
+type alias Point = (Float, Float)
+
+extremes: List Point -> MaxMin
 extremes ls =
   let (xs, ys) = List.unzip ls
       maximum nums= Maybe.withDefault 0 (List.maximum nums)
@@ -56,4 +64,20 @@ extremes ls =
       ,yMin = minimum ys
     }
 
+scale: (Int, Int) -> MaxMin -> List Point -> List Point 
+scale (w, h) mm points = 
+  let fit i max min val = i * abs(val - min) / abs(max - min)
+      f (x, y) = (fit (toFloat w) mm.xMax mm.xMin x, fit (toFloat h) mm.yMax mm.yMin y)
+  in
+     List.map f points
 
+genPoints: List Point
+genPoints = 
+  let r = [-500.0 .. 500.0]
+  in 
+    List.map2 (,) (List.map (\x -> x*x) r ) r
+
+
+draw: List Point -> Form 
+draw points = 
+  traced (solid red) (path points)
