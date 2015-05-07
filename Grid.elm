@@ -35,6 +35,8 @@ quadrent: Float -> Float -> Axis -> Form
 quadrent width height axis=
   traced (solid black) (fancyLine 0 (width, height) axis)
 
+dummy: Int
+dummy = 7
 
 majors: Float -> Float -> Axis -> Element
 majors width height axis = 
