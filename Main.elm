@@ -17,7 +17,12 @@ main =
 
 --View
 view: (Int, Int) -> Element
-view (w, h) = 
+view (w, h) =
+ let trimW = ((toFloat w /5) * 4)
+     trimH = ((toFloat h / 5) * 4 )
+     rw = round trimW
+     rh = round trimH
+ in
   container w h middle (  
     flow down [
      flow right [
@@ -27,9 +32,10 @@ view (w, h) =
       , show "Pretend 3" 
       , show "Pretend 4" 
     ]
-    , collage w h [
-       toForm (Grid.view (w, h))
-       ,draw (scale (w, h) (extremes genPoints) genPoints )
+    , collage rw rh [ 
+       toForm (Grid.view (rw, rh))
+       ,draw (scale (w, h) (extremes genPoints) genPoints ) |> move (-0.5 * (toFloat w), -0.5 * (toFloat h))
+       --,draw (scale (w, h) (extremes straightLine) straightLine)  |> move (-0.5 * (toFloat w), -0.5 * (toFloat h))
       ]
   ])
 
@@ -71,11 +77,15 @@ scale (w, h) mm points =
   in
      List.map f points
 
+straightLine: List Point
+straightLine = 
+  List.map2 (,) [-10.0..10.0] (List.map (\x -> x*x) [-10.0..10.0])
+
 genPoints: List Point
 genPoints = 
   let r = [-100.0 .. 100.0]
   in 
-    List.map2 (,) (List.map (\x -> x*x) r ) r
+    List.map2 (,) r  (List.map (\x -> x * x * x) r )  
 
 
 draw: List Point -> Form 

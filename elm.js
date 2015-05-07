@@ -2718,10 +2718,10 @@ Elm.Grid.make = function (_elm) {
                                                                 ,_0: n
                                                                 ,_1: _v0._1 / 2}]));}
                  _U.badCase($moduleName,
-                 "between lines 73 and 75");
+                 "between lines 71 and 73");
               }();}
          _U.badCase($moduleName,
-         "between lines 73 and 75");
+         "between lines 71 and 73");
       }();
    });
    var simpleGrid = F4(function (lines,
@@ -2754,7 +2754,7 @@ Elm.Grid.make = function (_elm) {
                     ,_1: height},
                     axis));}
                _U.badCase($moduleName,
-               "between lines 64 and 67");
+               "between lines 62 and 65");
             }();
          };
          var range = _L.range((0 - floatLines) / 2,
@@ -2804,7 +2804,7 @@ Elm.Grid.make = function (_elm) {
                     ,_1: height},
                     axis));}
                _U.badCase($moduleName,
-               "between lines 47 and 50");
+               "between lines 45 and 48");
             }();
          };
          return A3($Graphics$Collage.collage,
@@ -2832,13 +2832,11 @@ Elm.Grid.make = function (_elm) {
          switch (_v7.ctor)
          {case "_Tuple2":
             return function () {
-                 var trimH = $Basics.toFloat(_v7._1) / 5 * 4;
-                 var rh = $Basics.round(trimH);
-                 var trimW = $Basics.toFloat(_v7._0) / 5 * 4;
-                 var rw = $Basics.round(trimW);
+                 var trimH = $Basics.toFloat(_v7._1);
+                 var trimW = $Basics.toFloat(_v7._0);
                  return A3($Graphics$Collage.collage,
-                 rw,
-                 rh,
+                 _v7._0,
+                 _v7._1,
                  _L.fromArray([A3(quadrent,
                               trimW,
                               trimH,
@@ -2862,7 +2860,7 @@ Elm.Grid.make = function (_elm) {
                               X))]));
               }();}
          _U.badCase($moduleName,
-         "between lines 16 and 28");
+         "between lines 16 and 26");
       }();
    };
    _elm.Grid.values = {_op: _op
@@ -4355,13 +4353,25 @@ Elm.Main.make = function (_elm) {
                 ,_0: v0
                 ,_1: v1};
       }),
+      r,
       A2($List.map,
       function (x) {
-         return x * x;
+         return x * x * x;
       },
-      r),
-      r);
+      r));
    }();
+   var straightLine = A3($List.map2,
+   F2(function (v0,v1) {
+      return {ctor: "_Tuple2"
+             ,_0: v0
+             ,_1: v1};
+   }),
+   _L.range(-10.0,10.0),
+   A2($List.map,
+   function (x) {
+      return x * x;
+   },
+   _L.range(-10.0,10.0)));
    var scale = F3(function (_v0,
    mm,
    points) {
@@ -4391,13 +4401,13 @@ Elm.Main.make = function (_elm) {
                                  mm.yMin,
                                  _v4._1)};}
                        _U.badCase($moduleName,
-                       "on line 70, column 19 to 87");
+                       "on line 76, column 19 to 87");
                     }();
                  };
                  return A2($List.map,f,points);
               }();}
          _U.badCase($moduleName,
-         "between lines 69 and 72");
+         "between lines 75 and 78");
       }();
    });
    var extremes = function (ls) {
@@ -4436,33 +4446,41 @@ Elm.Main.make = function (_elm) {
       return function () {
          switch (_v8.ctor)
          {case "_Tuple2":
-            return A4($Graphics$Element.container,
-              _v8._0,
-              _v8._1,
-              $Graphics$Element.middle,
-              A2($Graphics$Element.flow,
-              $Graphics$Element.down,
-              _L.fromArray([A2($Graphics$Element.flow,
-                           $Graphics$Element.right,
-                           _L.fromArray([$Graphics$Element.show("Input here: ")
-                                        ,$Graphics$Element.show("Pretend 1")
-                                        ,$Graphics$Element.show("Pretend 2")
-                                        ,$Graphics$Element.show("Pretend 3")
-                                        ,$Graphics$Element.show("Pretend 4")]))
-                           ,A3($Graphics$Collage.collage,
-                           _v8._0,
-                           _v8._1,
-                           _L.fromArray([$Graphics$Collage.toForm($Grid.view({ctor: "_Tuple2"
-                                                                             ,_0: _v8._0
-                                                                             ,_1: _v8._1}))
-                                        ,draw(A3(scale,
-                                        {ctor: "_Tuple2"
-                                        ,_0: _v8._0
-                                        ,_1: _v8._1},
-                                        extremes(genPoints),
-                                        genPoints))]))])));}
+            return function () {
+                 var trimH = $Basics.toFloat(_v8._1) / 5 * 4;
+                 var rh = $Basics.round(trimH);
+                 var trimW = $Basics.toFloat(_v8._0) / 5 * 4;
+                 var rw = $Basics.round(trimW);
+                 return A4($Graphics$Element.container,
+                 _v8._0,
+                 _v8._1,
+                 $Graphics$Element.middle,
+                 A2($Graphics$Element.flow,
+                 $Graphics$Element.down,
+                 _L.fromArray([A2($Graphics$Element.flow,
+                              $Graphics$Element.right,
+                              _L.fromArray([$Graphics$Element.show("Input here: ")
+                                           ,$Graphics$Element.show("Pretend 1")
+                                           ,$Graphics$Element.show("Pretend 2")
+                                           ,$Graphics$Element.show("Pretend 3")
+                                           ,$Graphics$Element.show("Pretend 4")]))
+                              ,A3($Graphics$Collage.collage,
+                              rw,
+                              rh,
+                              _L.fromArray([$Graphics$Collage.toForm($Grid.view({ctor: "_Tuple2"
+                                                                                ,_0: rw
+                                                                                ,_1: rh}))
+                                           ,$Graphics$Collage.move({ctor: "_Tuple2"
+                                                                   ,_0: -0.5 * $Basics.toFloat(_v8._0)
+                                                                   ,_1: -0.5 * $Basics.toFloat(_v8._1)})(draw(A3(scale,
+                                           {ctor: "_Tuple2"
+                                           ,_0: _v8._0
+                                           ,_1: _v8._1},
+                                           extremes(genPoints),
+                                           genPoints)))]))])));
+              }();}
          _U.badCase($moduleName,
-         "between lines 21 and 34");
+         "between lines 21 and 40");
       }();
    };
    var main = A2($Signal.map,
@@ -4474,6 +4492,7 @@ Elm.Main.make = function (_elm) {
                       ,MaxMin: MaxMin
                       ,extremes: extremes
                       ,scale: scale
+                      ,straightLine: straightLine
                       ,genPoints: genPoints
                       ,draw: draw};
    return _elm.Main.values;

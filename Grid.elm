@@ -13,12 +13,10 @@ import Html.Events exposing (..)
 -- View
 view: (Int, Int) -> Element
 view (w, h) =
- let trimW = ((toFloat w /5) * 4)
-     trimH = ((toFloat h / 5) * 4 )
-     rw = round trimW
-     rh = round trimH 
+ let trimW =  toFloat w
+     trimH = toFloat h
  in 
-    collage rw rh [
+    collage w h [
       quadrent trimW trimH X      
       , quadrent trimW trimH Y
       , toForm (majors trimW trimH Y)
